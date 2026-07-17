@@ -26,6 +26,7 @@ setup(
     'console_scripts': [
         'bci_controller = bci_controller.bci_controller:main',
         'subscriber = bci_controller.subscriber:main',
+        'eeg_bridge = bci_controller.eeg_bridge:main',
     ],
 },
 )
