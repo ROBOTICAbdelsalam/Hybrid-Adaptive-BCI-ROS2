@@ -23,7 +23,9 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': [
-        ],
-    },
+    'console_scripts': [
+        'bci_controller = bci_controller.bci_controller:main',
+        'subscriber = bci_controller.subscriber:main',
+    ],
+},
 )
