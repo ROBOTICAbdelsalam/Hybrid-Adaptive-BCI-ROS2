@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
-
 import rclpy
 from rclpy.node import Node
+
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 
 
 class RobotController(Node):
@@ -12,9 +12,15 @@ class RobotController(Node):
         super().__init__("robot_controller")
 
         self.subscription = self.create_subscription(
-            String,
-            "eeg_command",
-            self.command_callback,
+    String,
+    "/eeg_command",
+    self.command_callback,
+    10
+)
+
+        self.cmd_pub = self.create_publisher(
+            Twist,
+            "/cmd_vel",
             10
         )
 
@@ -23,22 +29,35 @@ class RobotController(Node):
 
     def command_callback(self, msg):
 
-        command = msg.data
+        cmd = Twist()
 
-        if command == "LEFT":
+        if msg.data == "LEFT":
+
+            cmd.angular.z = 1.0
+
             self.get_logger().info("Robot Turning LEFT")
 
-        elif command == "RIGHT":
+        elif msg.data == "RIGHT":
+
+            cmd.angular.z = -1.0
+
             self.get_logger().info("Robot Turning RIGHT")
 
-        elif command == "STOP":
+        elif msg.data == "STOP":
+
+            cmd.linear.x = 0.0
+            cmd.angular.z = 0.0
+
             self.get_logger().info("Robot STOPPED")
 
-        elif command == "NO ACTION":
+        elif msg.data == "NO ACTION":
+
+            cmd.linear.x = 0.0
+            cmd.angular.z = 0.0
+
             self.get_logger().info("Waiting...")
 
-        else:
-            self.get_logger().warning(f"Unknown Command: {command}")
+        self.cmd_pub.publish(cmd)
 
 
 def main():
