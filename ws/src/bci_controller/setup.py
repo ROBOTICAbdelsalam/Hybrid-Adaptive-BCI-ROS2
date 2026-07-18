@@ -27,6 +27,7 @@ setup(
         'bci_controller = bci_controller.bci_controller:main',
         'subscriber = bci_controller.subscriber:main',
         'eeg_bridge = bci_controller.eeg_bridge:main',
+        'robot_controller = bci_controller.robot_controller:main',
     ],
 },
 )
